@@ -4,7 +4,7 @@
 ## Technos:
 **Front:** Angular  
 **Back:** Java Spring  
-**Auth:** Keycloak 
+**Auth:** Keycloak  
 **Conteneurisation:** Docker  
 **Orchestration:** K8s  
 **Build&Run:** Gitlab CI, Scan de sécurité  
