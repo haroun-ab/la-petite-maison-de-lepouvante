@@ -4,16 +4,15 @@
 ## Technos:
 **Front:** Angular  
 **Back:** Java Spring  
-**Auth:** Keycloak  
+**Auth et sécurité:** Keycloak, Gestion secrets, Scan de sécurité  
 **Conteneurisation:** Docker  
 **Orchestration:** K8s  
-**Build&Run:** Gitlab CI, Scan de sécurité  
+**Build&Run:** Gitlab CI  
 **Tests:** JUnit, PlayWright(bonus)  
 **Hébergement:** AWS  
-**Monitoring:** AWS CloudWatch
+**Monitoring:** AWS CloudWatch  
 
 ## Services
-
 - ApiGateway
 - ms-discovery
 - ms-config
