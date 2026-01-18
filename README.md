@@ -13,12 +13,13 @@
 **Monitoring:** AWS CloudWatch  
 
 ## Services
-- ApiGateway
-- ms-discovery
-- ms-config
-- ms-auth
-- ms-user
-- ms...
+- ApiGateway (routing, validation de token)
+- Discovery (permet au service de se connecter entre eux)
+- Config (centralise les config de tous les services)
+- User (gestion des informations des utilisateurs)
+- Catalog (gestion du gatalogue du produit)
+- Order (gestion de la commande)
+- Payment (gestion du paiement)
 
 
 
