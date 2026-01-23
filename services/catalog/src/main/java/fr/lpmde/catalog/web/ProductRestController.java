@@ -16,13 +16,13 @@ public class ProductRestController {
         this.productRepository = productRepository;
     }
 
-    @GetMapping("/product")
+    @GetMapping("/products")
     public List<Product> productList()
     {
         return productRepository.findAll();
     }
 
-    @GetMapping("/product/{id}")
+    @GetMapping("/products/{id}")
     public Product productById (@PathVariable Long id){
         Optional<Product> product = productRepository.findById(id);
         if (product.isPresent()) {
@@ -30,18 +30,18 @@ public class ProductRestController {
         } else return null;
     }
 
-    @PostMapping("/product")
+    @PostMapping("/products")
     public Product save (@RequestBody Product product){
         return productRepository.save(product);
     }
 
-    @PutMapping("/product/{id}")
+    @PutMapping("/products/{id}")
     public Product update (@PathVariable Long id, @RequestBody Product product){
         product.setId(id);
         return productRepository.save(product);
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("/products/{id}")
     public void delete (@PathVariable Long id){
         productRepository.deleteById(id);
     }
