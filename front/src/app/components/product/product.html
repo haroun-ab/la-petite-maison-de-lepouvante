@@ -1,23 +1,18 @@
 <div class="container my-5">
-    <h1 class="haunted-title">
-        La Maison de l'Épouvante
-    </h1>
+    <h1 class="haunted-title">La Maison de l'Épouvante</h1>
 
     <div class="row g-4">
-        @for (product of products; track product.id) {
-            <div class="card h-100 text-white horror-card shadow">
+        <ng-container *ngFor="let product of products() ; trackBy: trackById">
+            <div class="horror-card shadow" (click)="openProduct(product)" style="cursor: pointer;">
                 <img [src]="product.image" [alt]="product.title" class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title">{{ product.title }}</h5>
                     <p class="card-subtitle mb-2">{{ product.category }}</p>
                     <p class="card-text">{{ product.description }}</p>
                     <p class="fw-bold">€ {{ product.price }}</p>
-                    <div class="d-flex gap-2 mt-3">
-                        <button class="btn btn-success" (click)="saveProduct(product)">Enregistrer</button>
-                        <button class="btn btn-danger" (click)="removeProduct(product)">Supprimer</button>
-                    </div>
                 </div>
             </div>
-        }
+        </ng-container>
     </div>
+
 </div>
