@@ -1,0 +1,32 @@
+<div class="container my-5">
+
+  @if (loading()) {
+    <div class="text-center text-secondary">
+      Chargement du produit...
+    </div>
+  }
+
+  @if (error()) {
+    <div class="text-center text-danger">
+      {{ error() }}
+    </div>
+  }
+
+  @if (product()) {
+    <div class="product-detail-card mx-auto">
+      <img [src]="product()!.image" [alt]="product()!.title" class="product-image">
+
+      <div class="product-info">
+        <h2 class="product-title">{{ product()!.title }}</h2>
+        <p class="product-category">{{ product()!.category }}</p>
+        <p class="product-description">{{ product()!.description }}</p>
+        <p class="product-price">€ {{ product()!.price }}</p>
+
+        <div class="btn-container">
+          <button class="btn btn-save" (click)="saveProduct(product()!)">Ajouter au panier</button>
+          <button class="btn btn-delete" (click)="removeProduct(product()!)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

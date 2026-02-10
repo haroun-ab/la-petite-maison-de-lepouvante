@@ -1,0 +1,62 @@
+/* Layout cards */
+.row.g-4 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* Card */
+.horror-card {
+  background: #ffffff;
+  color: #1f1f1f;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.horror-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.horror-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.horror-card .card-body {
+  padding: 1rem;
+}
+
+.horror-card .card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: #111;
+}
+
+.horror-card .card-subtitle {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6b6b6b;
+  margin-bottom: 0.5rem;
+}
+
+.horror-card .card-text {
+  font-size: 0.85rem;
+  color: #444;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.horror-card .fw-bold {
+  font-size: 0.95rem;
+  color: #000;
+  margin-bottom: 0.75rem;
+}
