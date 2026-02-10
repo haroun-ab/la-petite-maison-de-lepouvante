@@ -8,7 +8,6 @@ import {NgClass} from '@angular/common';
   imports: [
     RouterLinkActive,
     RouterLink,
-    NgClass
   ],
   styleUrls: ['./navbar.css']
 })

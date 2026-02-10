@@ -1,8 +1,7 @@
 <div class="container my-5">
-    <h1 class="haunted-title">La Maison de l'Épouvante</h1>
-
+  <div style="height: 3rem;"></div>
     <div class="row g-4">
-        <ng-container *ngFor="let product of products() ; trackBy: trackById">
+      <ng-container *ngFor="let product of products() ; trackBy: trackById">
             <div class="horror-card shadow" (click)="openProduct(product)" style="cursor: pointer;">
                 <img [src]="product.image" [alt]="product.title" class="card-img-top">
                 <div class="card-body">

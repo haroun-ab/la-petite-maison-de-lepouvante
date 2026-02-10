@@ -19,7 +19,9 @@ export class ProductDetailComponent {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.loadProduct();
   }
 
