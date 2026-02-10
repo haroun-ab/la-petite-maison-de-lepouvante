@@ -1,0 +1,52 @@
+/* Reset visuel */
+.navbar {
+  background-color: #111;
+  padding: 1rem 2rem;
+}
+
+/* Conteneur */
+.navbar .container-fluid {
+  display: flex;
+  align-items: center;
+}
+
+/* Logo à gauche */
+.navbar-brand {
+  color: #b3261e !important;
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-decoration: none;
+  margin-right: 2rem;
+}
+
+/* Supprimer tout comportement responsive Bootstrap */
+.navbar-collapse {
+  display: flex !important;
+}
+
+/* Menu horizontal */
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  margin-left: auto;
+}
+
+/* Liens */
+.navbar-nav .nav-link {
+  color: #ffffff;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0;
+}
+
+/* Hover */
+.navbar-nav .nav-link:hover {
+  color: #b3261e;
+}
+
+/* Lien actif */
+.navbar-nav .nav-link.active {
+  color: #b3261e;
+  border-bottom: 2px solid #b3261e;
+}
