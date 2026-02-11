@@ -13,8 +13,9 @@ export const routes: Routes = [
   { path: 'products', component: ProductPage },          // page liste
   { path: 'products/:id', component: ProductDetailPage }, // page détail
   { path: 'cart', component: CartPage }, // page panier
-  { path: '**', component: ErrorPage } ,
   { path: 'orders', component: OrderComponent },
-  { path: 'orders/:id', component: OrderDetailComponent }
+  { path: 'orders/:id', component: OrderDetailComponent },
+  { path: '**', component: ErrorPage } ,
+
 
 ];
