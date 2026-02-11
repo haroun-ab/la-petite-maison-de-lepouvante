@@ -1,49 +1,56 @@
 package fr.lpmde.catalog.web;
 
+import fr.lpmde.catalog.dto.ProductDTO;
 import fr.lpmde.catalog.entities.Product;
 import fr.lpmde.catalog.repositories.ProductRepository;
+import fr.lpmde.catalog.mapper.ProductMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @CrossOrigin(origins = "http://localhost:4200")
-
 @RestController
+@RequestMapping("/products")
 public class ProductRestController {
-    private ProductRepository productRepository;
 
-    public ProductRestController(ProductRepository productRepository)
-    {
+    private final ProductRepository productRepository;
+
+    public ProductRestController(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    @GetMapping("/products")
-    public List<Product> productList()
-    {
-        return productRepository.findAll();
+    @GetMapping
+    public List<ProductDTO> productList() {
+        return productRepository.findAll()
+                .stream()
+                .map(ProductMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("/products/{id}")
-    public Product productById (@PathVariable Long id){
+    @GetMapping("/{id}")
+    public ProductDTO productById(@PathVariable Long id) {
         Optional<Product> product = productRepository.findById(id);
-        if (product.isPresent()) {
-            return product.get();
-        } else return null;
+        return product.map(ProductMapper::toDTO).orElse(null);
     }
 
-    @PostMapping("/products")
-    public Product save (@RequestBody Product product){
-        return productRepository.save(product);
+    @PostMapping
+    public ProductDTO save(@RequestBody ProductDTO productDTO) {
+        Product saved = productRepository.save(ProductMapper.fromDTO(productDTO));
+        return ProductMapper.toDTO(saved);
     }
 
-    @PutMapping("/products/{id}")
-    public Product update (@PathVariable Long id, @RequestBody Product product){
+    @PutMapping("/{id}")
+    public ProductDTO update(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        Product product = ProductMapper.fromDTO(productDTO);
         product.setId(id);
-        return productRepository.save(product);
+        Product updated = productRepository.save(product);
+        return ProductMapper.toDTO(updated);
     }
 
-    @DeleteMapping("/products/{id}")
-    public void delete (@PathVariable Long id){
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
         productRepository.deleteById(id);
     }
 }
