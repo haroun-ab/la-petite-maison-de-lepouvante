@@ -1,9 +1,9 @@
-import { Product } from '../../entities/product.model';
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { ProductService } from '../../services/product';
 import { CardComponent } from '../../components/card-component/card-component';
+import {Product} from '../../entities/product/product.model';
+import {ProductService} from '../../services/product/product';
 
 @Component({
   selector: 'app-product-page',

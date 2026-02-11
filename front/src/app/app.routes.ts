@@ -4,15 +4,16 @@ import { ProductDetailPage } from './page/product-detail-page/product-detail-pag
 import { HomePage } from './page/home-page/home-page';
 import { ErrorPage } from './page/error-page/error-page';
 import { CartPage } from './page/cart-page/cart-page';
+import {OrderDetailComponent} from './components/order-detail/order-detail-component/order-detail-component';
+import {OrderComponent} from './components/order/order-component/order-component';
+import {ProductDetailComponent} from './components/product-detail-component/product-detail-component';
 
 export const routes: Routes = [
-  { path: '', component: HomePage },          // page accueil
+  { path: '', component: HomePage, pathMatch: 'full' },          // page accueil
   { path: 'products', component: ProductPage },          // page liste
   { path: 'products/:id', component: ProductDetailPage }, // page détail
   { path: 'cart', component: CartPage }, // page panier
-  { path: '**', component: ErrorPage } // page erreur
-  { path: '', component: ProductComponent, pathMatch: 'full' },
-  { path: 'product/:id', component: ProductDetailComponent },
+  { path: '**', component: ErrorPage } ,
   { path: 'orders', component: OrderComponent },
   { path: 'orders/:id', component: OrderDetailComponent }
 

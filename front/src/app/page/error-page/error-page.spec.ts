@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Error } from './error';
-
 describe('ErrorPage', () => {
   let component: Error;
   let fixture: ComponentFixture<Error>;
