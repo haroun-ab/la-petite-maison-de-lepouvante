@@ -1,8 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ProductService } from '../../services/product';
-import { Product } from '../../entities/product.model';
+import { ProductService } from '../../services/product/product';
+import { Product } from '../../entities/product/product.model';
 
 @Component({
   selector: 'app-product-detail',

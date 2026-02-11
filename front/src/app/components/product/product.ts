@@ -1,8 +1,8 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Product } from '../../entities/product.model';
-import { ProductService } from '../../services/product';
+import { Product } from '../../entities/product/product.model';
+import { ProductService } from '../../services/product/product';
 
 @Component({
   selector: 'app-product',
