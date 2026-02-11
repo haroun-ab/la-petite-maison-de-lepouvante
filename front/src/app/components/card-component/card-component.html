@@ -1,0 +1,14 @@
+  <mat-card class="product-card" (click)="openProduct(product)" role="button" tabindex="0">
+    <img mat-card-image [src]="product.image" [alt]="product.title">
+
+    <mat-card-header>
+        <mat-card-subtitle>{{ product.category }}</mat-card-subtitle>
+        <mat-card-title>{{ product.title }}</mat-card-title>
+    </mat-card-header>
+    
+    
+    <mat-card-content>
+      <p>{{ truncateText(product.description, 60) }}</p>
+      <p class="price"><strong>{{ product.price }} €</strong></p>
+    </mat-card-content>
+  </mat-card>

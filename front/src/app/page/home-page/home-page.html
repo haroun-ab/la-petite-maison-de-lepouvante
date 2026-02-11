@@ -1,0 +1,39 @@
+<div class="banner">
+  <div class="banner-content">
+    <h1 class="banner-title">Bienvenue à La petite Maison de l'Épouvante</h1>
+    <p class="banner-subtitle">Découvrez nos produits effrayants et uniques pour Halloween et au-delà !</p>
+    <a [routerLink]="['/products']" class="btn btn-danger btn-lg">Voir nos produits</a>
+  </div>    
+    <img src="./banner-background.jpg" alt="Banner Image" class="banner-image">
+</div>
+<div class="top-products">
+    <h2 class="section-title">Nos produits les plus populaires</h2>
+    <div class="product-list">
+        <!-- <div class="product-card" *ngFor="let product of topProducts">
+            <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image">
+            <h3 class="product-name">{{ product.name }}</h3>
+            <p class="product-price">{{ product.price | currency:'EUR' }}</p>
+            <a [routerLink]="['/products', product.id]" class="btn btn-outline-danger">Voir le produit</a>
+        </div> -->
+    </div>
+    
+</div>
+<div class="features">
+    <div class="feature">
+        <i class="fa-solid fa-fire feature-icon"></i>
+        <h3 class="feature-title">Produits uniques</h3>
+        <p class="feature-description">Des décorations, costumes et accessoires exclusifs pour une expérience d'épouvante inoubliable.</p>
+    </div>
+    <div class="feature">
+        <i class="fa-regular fa-truck feature-icon"></i>
+        <h3 class="feature-title">Livraison rapide</h3>
+        <p class="feature-description">Nous assurons une livraison rapide et fiable pour que vous
+        puissiez profiter de nos produits sans attendre.</p>
+    </div>
+    <div class="feature">
+        <i class="fa-solid fa-headset feature-icon"></i>
+        <h3 class="feature-title">Service client</h3>
+        <p class="feature-description">Notre équipe est là pour vous aider avec toutes vos questions et préoccupations.</p>
+    </div> 
+</div>
+

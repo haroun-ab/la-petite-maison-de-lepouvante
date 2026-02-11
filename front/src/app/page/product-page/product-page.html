@@ -1,0 +1,7 @@
+<div class="container my-5">
+    <div class="products-grid">
+        <ng-container *ngFor="let product of products(); trackBy: trackById">
+            <app-card-component [product]="product" (productSelected)="openProduct($event)"></app-card-component>
+        </ng-container>
+    </div>
+</div>
