@@ -1,17 +1,18 @@
+import { Product } from '../../entities/product.model';
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Product } from '../../entities/product.model';
 import { ProductService } from '../../services/product';
+import { CardComponent } from '../../components/card-component/card-component';
 
 @Component({
-  selector: 'app-product',
+  selector: 'app-product-page',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './product.html',
-  styleUrls: ['./product.css']
+  imports: [CommonModule, CardComponent],
+  templateUrl: './product-page.html',
+  styleUrls: ['./product-page.css']
 })
-export class ProductComponent implements OnInit {
+export class ProductPage implements OnInit {
 
   products = signal<Product[]>([]); // signal pour reactive
   constructor(private productService: ProductService, private router: Router) {}
@@ -24,7 +25,7 @@ export class ProductComponent implements OnInit {
   }
 
   openProduct(product: Product) {
-    this.router.navigate(['/product', product.id]);
+    this.router.navigate(['/products', product.id]);
   }
 
   trackById(index: number, product: Product): number {

@@ -1,0 +1,114 @@
+/* Reset visuel */
+.navbar {
+  background-color: var(--background-color);
+  padding: 1rem 2rem;
+  border-bottom: var(--primary-color) 4px solid;
+}
+
+/* Conteneur */
+.navbar .container-fluid {
+  display: flex;
+  align-items: center;
+}
+.nav-item {
+  list-style: none;
+}
+/* Logo à gauche */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  color: var(--primary-color) !important;
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-decoration: none;
+  margin-right: 2rem;
+}
+.navbar-brand span{
+  font-family: var(--logo-font-family);
+  color: white;
+}
+
+.navbar-brand svg{
+  width: 40px;
+  height: 40px;
+  fill: var(--primary-color);
+  animation: wink 4s linear infinite;
+}
+
+
+/**
+ * ----------------------------------------
+ * animation logo qui clignote
+ * ----------------------------------------
+ */
+@-webkit-keyframes wink {
+  0% {
+    fill: var(--primary-color-dark)
+  }
+  20% {
+    fill: var(--primary-color)
+  }
+  0% {
+    fill: var(--primary-color-dark)
+  }
+  60% {
+    fill: var(--primary-color)
+  }
+  80% {
+    fill: var(--primary-color-dark)
+  }
+  100% {
+    fill: var(--primary-color)
+  }
+}
+@keyframes wink {
+  10% {
+    fill: var(--primary-color-dark)
+  }
+  30% {
+    fill: var(--primary-color)
+  }
+  40% {
+    fill: var(--primary-color-dark)
+  }
+  70% {
+    fill: var(--primary-color)
+  }
+  80% {
+    fill: var(--primary-color-dark)
+  }
+  99% {
+    fill: var(--primary-color)
+  }
+}
+
+/* Supprimer tout comportement responsive Bootstrap */
+.navbar-collapse {
+  display: flex !important;
+}
+
+/* Menu horizontal */
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  margin-left: auto;
+}
+
+/* Liens */
+.navbar-nav .nav-link {
+  color: #ffffff;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0;
+}
+
+/* Hover */
+.navbar-nav .nav-link:hover {
+  color: var(--primary-color);
+}
+
+/* Lien actif */
+.navbar-nav .nav-link.active i{
+  color: var(--primary-color);
+}
