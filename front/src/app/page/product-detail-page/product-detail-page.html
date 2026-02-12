@@ -22,9 +22,22 @@
         <p class="product-description">{{ product()!.description }}</p>
         <p class="product-price">€ {{ product()!.price }}</p>
 
-        <div class="btn-container">
-          <button class="btn btn-save" (click)="saveProduct(product()!)">Ajouter au panier</button>
-          <button class="btn btn-delete" (click)="removeProduct(product()!)">Supprimer</button>
+        <div class="btn-container" >
+          <label style="color:black" for="qty">Quantité :</label>
+          <input style="color:black"
+            type="number"
+            id="qty"
+            min="1"
+            [max]="product()!.stock"
+            [value]="quantity()"
+            (input)="quantity.set(quantityTarget($event))">
+
+          <button
+            class="btn btn-save"
+            (click)="addToCart()"
+            [disabled]="product()!.stock === 0">
+            Ajouter au panier
+          </button>
         </div>
       </div>
     </div>

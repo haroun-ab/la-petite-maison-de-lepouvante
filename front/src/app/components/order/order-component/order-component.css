@@ -1,0 +1,7 @@
+.table-container {
+  display: flex;              /* active flexbox */
+  justify-content: center;    /* centre horizontalement */
+  align-items: center;        /* centre verticalement */
+  min-height: 80vh;           /* hauteur pour centrer verticalement */
+  padding: 2rem;              /* espace autour */
+}

@@ -103,3 +103,12 @@
 .btn-delete:hover {
   background-color: var(--primary-color-dark);
 }
+.success-snackbar {
+  --mdc-snackbar-container-color: #2ecc71;
+  --mdc-snackbar-supporting-text-color: white;
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #e74c3c;
+  --mdc-snackbar-supporting-text-color: white;
+}
