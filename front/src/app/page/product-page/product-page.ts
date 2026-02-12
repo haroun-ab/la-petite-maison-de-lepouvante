@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import {Component, OnInit, signal, computed, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CardComponent } from '../../components/card-component/card-component';
@@ -13,7 +13,6 @@ import {ProductService} from '../../services/product/product';
   styleUrls: ['./product-page.css']
 })
 export class ProductPage implements OnInit {
-
   products = signal<Product[]>([]); // signal pour reactive
   constructor(private productService: ProductService, private router: Router) {}
 

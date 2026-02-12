@@ -23,4 +23,11 @@ export class ProductService {
       map(dto => new Product(dto))
     );
   }
+  getStock(productId: number) {
+    return this.http.get<number>(`${this.baseUrl}/${productId}/stock`);
+  }
+
+  decrementStock(productId: number): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/${productId}/decrement-stock`, {});
+  }
 }

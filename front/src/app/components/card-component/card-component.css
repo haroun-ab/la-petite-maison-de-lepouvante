@@ -31,7 +31,7 @@ mat-card-subtitle {
 mat-card-content{
     display: flex;
     align-items: flex-start;
-    justify-content: space-between; 
+    justify-content: space-between;
 }
 
 mat-card-content p:first-child {
@@ -44,4 +44,27 @@ mat-card-content p:first-child {
 mat-card-content p:last-child {
     min-width: fit-content;
     margin-left: 1rem;
+}.card {
+   position: relative;
+   overflow: hidden;
+ }
+
+.stock-ribbon {
+  position: absolute;
+  top: 20px;
+  left: -60px;
+  width: 220px;
+  text-align: center;
+  background: #e74c3c;
+  color: white;
+  font-weight: bold;
+  padding: 8px 0;
+  transform: rotate(-45deg);
+  font-size: 0.9rem;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.card.out-of-stock {
+  opacity: 0.75;
 }

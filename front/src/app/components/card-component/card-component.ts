@@ -14,6 +14,12 @@ export class CardComponent {
   @Input() product: any = {};
   @Output() productSelected = new EventEmitter<any>();
 
+  selectProduct() {
+    if (this.product.stock > 0) {
+      this.productSelected.emit(this.product);
+    }
+  }
+
   truncateText(text: string, maxLength: number = 80): string {
     if (!text) return '';
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
