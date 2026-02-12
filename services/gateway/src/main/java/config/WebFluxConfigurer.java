@@ -10,7 +10,7 @@ public abstract class WebFluxConfigurer {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:4200") // ton front
+                        .allowedOrigins("http://frontend") // docker frontend
                         .allowedMethods("*");
             }
         };

@@ -1,0 +1,27 @@
+# Notification Service - Build & Test
+
+build:notification:
+  stage: build
+  image: maven:3.8.1-openjdk-17
+  script:
+    - cd services/notification
+    - mvn clean package -DskipTests
+  artifacts:
+    paths:
+      - services/notification/target/notification-*.jar
+    expire_in: 30 days
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:notification:
+  stage: test
+  image: maven:3.8.1-openjdk-17
+  script:
+    - cd services/notification
+    - mvn clean test
+  only:
+    - merge_requests
+    - main
+    - develop

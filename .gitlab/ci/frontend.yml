@@ -1,0 +1,52 @@
+# Frontend Angular - Build & Test
+
+build:frontend:
+  stage: build
+  image: node:24-alpine
+  cache:
+    paths:
+      - front/node_modules/
+  script:
+    - cd front
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - front/dist/
+    expire_in: 30 days
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:frontend:
+  stage: test
+  image: node:24-alpine
+  cache:
+    paths:
+      - front/node_modules/
+  script:
+    - cd front
+    - npm ci
+    - npm run test -- --watch=false
+  only:
+    - merge_requests
+    - main
+    - develop
+  allow_failure: true
+
+lint:frontend:
+  stage: test
+  image: node:24-alpine
+  cache:
+    paths:
+      - front/node_modules/
+  script:
+    - cd front
+    - npm ci
+    - npm run lint
+  only:
+    - merge_requests
+    - main
+    - develop
+  allow_failure: true

@@ -1,0 +1,27 @@
+# Catalog Service - Build & Test
+
+build:catalog:
+  stage: build
+  image: maven:3.8.1-openjdk-17
+  script:
+    - cd services/catalog
+    - mvn clean package -DskipTests
+  artifacts:
+    paths:
+      - services/catalog/target/catalog-*.jar
+    expire_in: 30 days
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:catalog:
+  stage: test
+  image: maven:3.8.1-openjdk-17
+  script:
+    - cd services/catalog
+    - mvn clean test
+  only:
+    - merge_requests
+    - main
+    - develop

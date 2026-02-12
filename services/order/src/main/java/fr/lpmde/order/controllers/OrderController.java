@@ -9,7 +9,7 @@ import fr.lpmde.order.repository.OrderRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://frontend")
 @RestController
 public class OrderController {
     private OrderRepository orderRepository;

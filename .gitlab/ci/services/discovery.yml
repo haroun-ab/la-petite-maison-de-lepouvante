@@ -1,0 +1,28 @@
+# Discovery Service (Eureka) - Build & Test
+
+build:discovery:
+  stage: build
+  image: maven:3.8.1-openjdk-17
+  script:
+    - cd services/discovery
+    - mvn clean package -DskipTests
+  artifacts:
+    paths:
+      - services/discovery/target/discovery-*.jar
+    expire_in: 30 days
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:discovery:
+  stage: test
+  image: maven:3.8.1-openjdk-17
+  script:
+    - cd services/discovery
+    - mvn clean test
+  only:
+    - merge_requests
+    - main
+    - develop
+  allow_failure: true

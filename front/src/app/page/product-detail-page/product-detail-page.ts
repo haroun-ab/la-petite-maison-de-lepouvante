@@ -1,8 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ProductService } from '../../services/product';
-import { Product } from '../../entities/product.model';
+import { Product } from '../../entities/product/product.model';
+import { ProductService } from '../../services/product/product';
 
 @Component({
   selector: 'app-product-detail-page',
@@ -29,7 +29,7 @@ export class ProductDetailPage {
 
     if (id !== null && !isNaN(id)) {
       this.productService.getById(id).subscribe({
-        next: (prod) => {
+        next: (prod: any) => {
           this.product.set(prod);
           this.loading.set(false);
         },

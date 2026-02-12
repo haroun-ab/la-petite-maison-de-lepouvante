@@ -8,7 +8,7 @@ import {OrderDTO} from '../../model/orderDTO';
   providedIn: 'root',
 })
 export class OrderService {
-  private baseUrl = 'http://localhost:8082/orders';
+  private baseUrl = '/ORDERS/orders';
 
   constructor(private http: HttpClient) {}
 

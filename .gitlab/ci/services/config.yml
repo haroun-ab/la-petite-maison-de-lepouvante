@@ -1,0 +1,28 @@
+# Config Server - Build & Test
+
+build:config:
+  stage: build
+  image: maven:3.8.1-openjdk-17
+  script:
+    - cd services/config
+    - mvn clean package -DskipTests
+  artifacts:
+    paths:
+      - services/config/target/config-*.jar
+    expire_in: 30 days
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:config:
+  stage: test
+  image: maven:3.8.1-openjdk-17
+  script:
+    - cd services/config
+    - mvn clean test
+  only:
+    - merge_requests
+    - main
+    - develop
+  allow_failure: true

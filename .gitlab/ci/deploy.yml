@@ -1,0 +1,132 @@
+# Déploiement en production (Manuel)
+
+deploy:config:
+  stage: deploy
+  image: maven:3.8.1-openjdk-17
+  script:
+    - echo "Déploiement du Config Server..."
+    - cd services/config
+    - # Ajouter commandes de déploiement (Docker, Kubernetes, etc.)
+  environment:
+    name: production
+    url: http://config-server:9999
+  only:
+    - main
+  when: manual
+
+deploy:discovery:
+  stage: deploy
+  image: maven:3.8.1-openjdk-17
+  script:
+    - echo "Déploiement du Discovery Service..."
+    - cd services/discovery
+    - # Ajouter commandes de déploiement
+  environment:
+    name: production
+    url: http://discovery:8761
+  only:
+    - main
+  when: manual
+
+deploy:gateway:
+  stage: deploy
+  image: maven:3.8.1-openjdk-17
+  script:
+    - echo "Déploiement du Gateway..."
+    - cd services/gateway
+    - # Ajouter commandes de déploiement
+  environment:
+    name: production
+    url: http://gateway:8888
+  only:
+    - main
+  when: manual
+
+deploy:catalog:
+  stage: deploy
+  image: maven:3.8.1-openjdk-17
+  script:
+    - echo "Déploiement du Catalog Service..."
+    - cd services/catalog
+    - # Ajouter commandes de déploiement
+  environment:
+    name: production
+    url: http://catalog:8080
+  only:
+    - main
+  when: manual
+
+deploy:payment:
+  stage: deploy
+  image: maven:3.8.1-openjdk-17
+  script:
+    - echo "Déploiement du Payment Service..."
+    - cd services/payment
+    - # Ajouter commandes de déploiement
+  environment:
+    name: production
+    url: http://payment:8081
+  only:
+    - main
+  when: manual
+
+deploy:order:
+  stage: deploy
+  image: maven:3.8.1-openjdk-17
+  script:
+    - echo "Déploiement du Order Service..."
+    - cd services/order
+    - # Ajouter commandes de déploiement
+  environment:
+    name: production
+    url: http://order:8082
+  only:
+    - main
+  when: manual
+
+deploy:user:
+  stage: deploy
+  image: maven:3.8.1-openjdk-17
+  script:
+    - echo "Déploiement du User Service..."
+    - cd services/user
+    - # Ajouter commandes de déploiement
+  environment:
+    name: production
+    url: http://user:8083
+  only:
+    - main
+  when: manual
+
+deploy:notification:
+  stage: deploy
+  image: maven:3.8.1-openjdk-17
+  script:
+    - echo "Déploiement du Notification Service..."
+    - cd services/notification
+    - # Ajouter commandes de déploiement
+  environment:
+    name: production
+    url: http://notification:8084
+  only:
+    - main
+  when: manual
+
+deploy:frontend:
+  stage: deploy
+  image: node:24-alpine
+  cache:
+    paths:
+      - front/node_modules/
+  script:
+    - echo "Déploiement du Frontend..."
+    - cd front
+    - npm ci
+    - npm run build
+    - # Ajouter commandes de déploiement (S3, Netlify, serveur, etc.)
+  environment:
+    name: production
+    url: https://app.example.com
+  only:
+    - main
+  when: manual
