@@ -39,7 +39,7 @@ public class CatalogApplication {
                                 .price(new BigDecimal("18.00"))
                                 .category("Livre")
                                 .image("https://picsum.photos/id/1012/400/300")
-                                .stock(40)
+                                .stock(10)
                                 .build(),
 
                         Product.builder()

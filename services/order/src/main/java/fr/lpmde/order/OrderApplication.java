@@ -22,7 +22,7 @@ public class OrderApplication {
 			if (repo.count() == 0) {
 				List<Order> orders = List.of(
 						Order.builder().clientId(1L).orderDate(LocalDateTime.now().minusDays(3)).status("PAID").build(),
-						Order.builder().clientId(2L).orderDate(LocalDateTime.now().minusDays(2)).status("PENDING").build(),
+						Order.builder().clientId(1L).orderDate(LocalDateTime.now().minusDays(2)).status("PENDING").build(),
 						Order.builder().clientId(1L).orderDate(LocalDateTime.now().minusDays(1)).status("SHIPPED").build()
 				);
 				repo.saveAll(orders);
