@@ -73,7 +73,6 @@
           },
           "configurations": {
             "ci": {
-              "codeCoverage": true,
               "watch": false,
               "browsers": ["ChromeHeadless"]
             }
