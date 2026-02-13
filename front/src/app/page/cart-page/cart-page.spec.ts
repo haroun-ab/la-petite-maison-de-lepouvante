@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { vi } from 'vitest';
 
 import { CartPage } from './cart-page';
 
@@ -7,6 +8,16 @@ describe('CartPage', () => {
   let fixture: ComponentFixture<CartPage>;
 
   beforeEach(async () => {
+    // Mock localStorage
+    Object.defineProperty(window, 'localStorage', {
+      value: {
+        getItem: vi.fn(() => null),
+        setItem: vi.fn(() => null),
+        removeItem: vi.fn(() => null)
+      },
+      writable: true
+    });
+
     await TestBed.configureTestingModule({
       imports: [CartPage]
     })

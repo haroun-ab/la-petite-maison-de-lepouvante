@@ -67,14 +67,11 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "reporters": ["progress", "kjhtml"],
-            "browsers": ["ChromeHeadless"],
             "watch": false
           },
           "configurations": {
             "ci": {
-              "watch": false,
-              "browsers": ["ChromeHeadless"]
+              "watch": false
             }
           }
         }
