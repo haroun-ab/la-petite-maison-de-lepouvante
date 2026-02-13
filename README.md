@@ -170,14 +170,6 @@ docker compose logs -f
 docker compose logs -f catalog
 ```
 
-## 🤝 Contribution
-
-1. Fork le projet
-2. Crée une branche feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tes changements (`git commit -m 'Add some AmazingFeature'`)
-4. Push vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvre une Pull Request
-
 ## 📝 Licence
 
 Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.

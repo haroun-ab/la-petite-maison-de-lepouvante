@@ -65,7 +65,20 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "codeCoverage": true,
+            "reporters": ["progress", "kjhtml"],
+            "browsers": ["ChromeHeadless"],
+            "watch": false
+          },
+          "configurations": {
+            "ci": {
+              "codeCoverage": true,
+              "watch": false,
+              "browsers": ["ChromeHeadless"]
+            }
+          }
         }
       }
     }
