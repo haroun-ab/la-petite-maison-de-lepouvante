@@ -22,14 +22,14 @@ test_services:
   image: maven:3.9.5-eclipse-temurin-21
   script:
     - echo "Running unit tests for all services..."
-    - cd services/catalog && mvn test
-    - cd ../order && mvn test
-    - cd ../payment && mvn test
-    - cd ../user && mvn test
-    - cd ../notification && mvn test
-    - cd ../gateway && mvn test
-    - cd ../discovery && mvn test
-    - cd ../config && mvn test
+    - cd services/catalog && mvn test -Dspring.profiles.active=test
+    - cd ../order && mvn test -Dspring.profiles.active=test
+    - cd ../payment && mvn test -Dspring.profiles.active=test
+    - cd ../user && mvn test -Dspring.profiles.active=test
+    - cd ../notification && mvn test -Dspring.profiles.active=test
+    - cd ../gateway && mvn test -Dspring.profiles.active=test
+    - cd ../discovery && mvn test -Dspring.profiles.active=test
+    - cd ../config && mvn test -Dspring.profiles.active=test
   only:
     - develop
     - main
@@ -40,6 +40,7 @@ test_services:
   artifacts:
     reports:
       junit: "**/target/surefire-reports/TEST-*.xml"
+    when: always
     when: always
 
 # Tests du frontend
@@ -64,7 +65,7 @@ test_frontend:
     reports:
       coverage_report:
         coverage_format: cobertura
-        path: front/coverage/front/cobertura-coverage.xml
+        path: front/coverage/**/cobertura-coverage.xml
     when: always
 
 # Build des images Docker

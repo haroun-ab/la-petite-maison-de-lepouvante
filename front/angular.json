@@ -67,7 +67,6 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "codeCoverage": true,
             "reporters": ["progress", "kjhtml"],
             "browsers": ["ChromeHeadless"],
             "watch": false
