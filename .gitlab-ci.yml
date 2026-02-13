@@ -22,14 +22,14 @@ test_services:
   image: maven:3.9.5-eclipse-temurin-21
   script:
     - echo "Running unit tests for all services..."
-    - cd services/catalog && mvn test -Dspring.profiles.active=test
-    - cd ../order && mvn test -Dspring.profiles.active=test
-    - cd ../payment && mvn test -Dspring.profiles.active=test
-    - cd ../user && mvn test -Dspring.profiles.active=test
-    - cd ../notification && mvn test -Dspring.profiles.active=test
-    - cd ../gateway && mvn test -Dspring.profiles.active=test
-    - cd ../discovery && mvn test -Dspring.profiles.active=test
-    - cd ../config && mvn test -Dspring.profiles.active=test
+    - cd services/catalog && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false
+    - cd ../order && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false
+    - cd ../payment && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false
+    - cd ../user && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false
+    - cd ../notification && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false
+    - cd ../gateway && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false
+    - cd ../discovery && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false
+    - cd ../config && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false
   only:
     - develop
     - main
