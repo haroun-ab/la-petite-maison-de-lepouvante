@@ -75,7 +75,17 @@ docker compose logs -f
 | **Eureka** | http://localhost:8761 | Dashboard services | ✅ |
 | **Config** | http://localhost:9999 | Configuration | ✅ |
 
-## 🔧 Configuration Technique
+### Configuration Technique et Injection
+
+Pour assurer le bon fonctionnement dans l'environnement conteneurisé, la configuration du Config Server est injectée dynamiquement via des variables d'environnement dans `docker-compose.yml`, surchargeant les propriétés par défaut (`application.properties`).
+
+```yaml
+environment:
+  - SPRING_CONFIG_IMPORT=configserver:http://config:9999
+  - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://discovery:8761/eureka
+```
+
+Cette approche permet de découpler la configuration locale de développement (qui peut échouer sans le serveur de config) de la configuration d'exécution Docker.
 
 ### Health Checks Automatiques
 

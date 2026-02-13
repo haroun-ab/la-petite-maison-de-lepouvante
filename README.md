@@ -9,12 +9,12 @@ Application e-commerce complète avec thème d'horreur, construite avec une arch
 ## 🏗️ Architecture
 
 ### Technologies Principales
-- **Frontend**: Angular 18+ avec Angular Material
-- **Backend**: Spring Boot 3.5.10 + Spring Cloud 2025.0.1
-- **Base de données**: H2 (développement)
+- **Frontend**: Angular 18+ (Vitest pour les tests)
+- **Backend**: Spring Boot 3.5.10 + Spring Cloud 2025.0.1 (Java 21)
+- **Base de données**: H2 (In-memory pour tests/dev)
 - **Conteneurisation**: Docker + Docker Compose
-- **Orchestration**: Docker Compose (extension vers Kubernetes prévue)
-- **CI/CD**: GitLab CI/CD
+- **Orchestration**: Docker Compose
+- **CI/CD**: GitLab CI/CD (Test, Build, Security)
 - **Service Discovery**: Eureka
 - **Configuration**: Spring Cloud Config Server
 - **API Gateway**: Spring Cloud Gateway
@@ -90,11 +90,14 @@ docker compose restart frontend
 ## 🔄 CI/CD GitLab
 
 ### Pipeline Automatisé
-Le pipeline GitLab CI/CD s'exécute automatiquement sur chaque push :
+Le pipeline GitLab CI/CD (`.gitlab-ci.yml`) s'exécute automatiquement sur les branches `develop` et `main` :
 
-1. **Build** : Compilation de tous les services Java et Angular
-2. **Test** : Exécution des tests unitaires
-3. **Deploy** : Déploiement en production (approbation manuelle)
+1. **Test** :
+   - Backend : Tests unitaires JUnit avec base de données H2 en mémoire (isolation complète sans Eureka/Config Server).
+   - Frontend : Tests unitaires Angular avec Vitest.
+2. **Build** : Construction des images Docker pour tous les microservices et le frontend.
+   - Utilise Docker-in-Docker (dind) version 27 pour compatibilité API.
+3. **Security** : Analyse statique de code (SAST) et détection de secrets.
 
 ### Structure CI/CD
 ```
