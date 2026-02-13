@@ -26,7 +26,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh && sed -i 's/\r$//' /docker-entrypoint.sh
 
 # Copy built app from builder
 COPY --from=builder /build/dist/front/browser /usr/share/nginx/html
