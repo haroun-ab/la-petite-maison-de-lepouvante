@@ -6,18 +6,24 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 @Entity
-@NoArgsConstructor
+@Table(name = "orders")
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "orders")
 public class Order {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Long clientId;
-    private LocalDateTime orderDate;
+
+    private Double total;
+
     private String status;
+
+    private LocalDateTime orderDate;
 
 }

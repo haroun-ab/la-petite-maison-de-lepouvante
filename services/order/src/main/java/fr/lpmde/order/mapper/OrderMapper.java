@@ -5,28 +5,27 @@ import fr.lpmde.order.model.Order;
 
 public class OrderMapper {
 
-    // Entity -> DTO
     public static OrderDTO toDTO(Order order) {
         if (order == null) return null;
+
         return new OrderDTO(
                 order.getId(),
                 order.getClientId(),
-                order.getOrderDate(),
-                order.getStatus()
+                order.getTotal(),
+                order.getStatus(),
+                order.getOrderDate()
         );
     }
 
-    // DTO -> Entity
-    public static Order fromDTO(OrderDTO orderDTO) {
-        if (orderDTO == null) {
-            return null;
-        }
+    public static Order fromDTO(OrderDTO dto) {
+        if (dto == null) return null;
 
-        Order order = new Order();
-        order.setId(orderDTO.getId());
-        order.setClientId(orderDTO.getClientId());
-        order.setStatus(orderDTO.getStatus());
-        order.setOrderDate(orderDTO.getOrderDate());
-        return order;
+        return Order.builder()
+                .id(dto.getId())
+                .clientId(dto.getClientId())
+                .total(dto.getTotal())
+                .status(dto.getStatus())
+                .orderDate(dto.getOrderDate())
+                .build();
     }
 }

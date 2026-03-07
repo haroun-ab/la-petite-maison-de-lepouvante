@@ -5,10 +5,10 @@ export interface OrderItemDTO {
 }
 
 export interface OrderDTO {
-  id?: number;           // optionnel si commande pas encore créée
-  clientId?: number;     // optionnel côté frontend
+  id?: number;
+  clientId?: number;
   items: OrderItemDTO[];
   total: number;
   status: string;
-  orderDate?: string;    // optionnel côté frontend
+  orderDate?: string;
 }

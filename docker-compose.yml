@@ -2,7 +2,6 @@ services:
   # ============================================
   # INFRASTRUCTURE
   # ============================================
-
   discovery:
     build:
       context: ./services/discovery
@@ -14,11 +13,11 @@ services:
       - SPRING_APPLICATION_NAME=discovery
       - SERVER_PORT=8761
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://discovery:8761/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
       interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 40s
+      retries: 5
+      start_period: 20s
     networks:
       - petite-maison-network
 
@@ -36,17 +35,13 @@ services:
       discovery:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://config:9999/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:9999/actuator/health"]
       interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 40s
+      retries: 5
+      start_period: 20s
     networks:
       - petite-maison-network
-
-  # ============================================
-  # GATEWAY
-  # ============================================
 
   gateway:
     build:
@@ -66,18 +61,17 @@ services:
       discovery:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://gateway:8888/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
       interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 40s
+      retries: 5
+      start_period: 20s
     networks:
       - petite-maison-network
 
   # ============================================
   # MICROSERVICES
   # ============================================
-
   catalog:
     build:
       context: ./services/catalog
@@ -95,12 +89,23 @@ services:
         condition: service_healthy
       discovery:
         condition: service_healthy
+    networks:
+      - petite-maison-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://catalog:8080/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
     networks:
       - petite-maison-network
 
@@ -116,11 +121,23 @@ services:
       - SERVER_PORT=8081
       - SPRING_CONFIG_IMPORT=configserver:http://config:9999
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://discovery:8761/eureka
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=user
+      - SPRING_RABBITMQ_PASSWORD=password
     depends_on:
+      rabbitmq:
+        condition: service_healthy
       config:
         condition: service_healthy
       discovery:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
     networks:
       - petite-maison-network
 
@@ -136,11 +153,23 @@ services:
       - SERVER_PORT=8082
       - SPRING_CONFIG_IMPORT=configserver:http://config:9999
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://discovery:8761/eureka
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=user
+      - SPRING_RABBITMQ_PASSWORD=password
     depends_on:
+      rabbitmq:
+        condition: service_healthy
       config:
         condition: service_healthy
       discovery:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
     networks:
       - petite-maison-network
 
@@ -184,10 +213,6 @@ services:
     networks:
       - petite-maison-network
 
-  # ============================================
-  # FRONTEND
-  # ============================================
-
   frontend:
     build:
       context: ./front
@@ -198,12 +223,6 @@ services:
     depends_on:
       gateway:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
     networks:
       - petite-maison-network
 
