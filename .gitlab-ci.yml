@@ -7,24 +7,33 @@
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 stages:
 - test
+- sonar
 - build
+- deploy
 - secret-detection
 
-# Pipeline pour develop : build et test
+# Pipeline pour develop, main et rabbitmq
 workflow:
   rules:
     - if: $CI_COMMIT_BRANCH == "develop"
     - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "rabbitmq"
 
 # Tests unitaires des services
 test_services:
   stage: test
   image: maven:3.9.5-eclipse-temurin-21
+  services:
+    - name: rabbitmq:3-management
+      alias: rabbitmq
+      variables:
+        RABBITMQ_DEFAULT_USER: user
+        RABBITMQ_DEFAULT_PASS: password
   script:
     - echo "Running unit tests for all services..."
     - cd services/catalog && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false -Dspring.config.import=
-    - cd ../order && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false -Dspring.config.import=
-    - cd ../payment && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false -Dspring.config.import=
+    - cd ../order && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false -Dspring.config.import= -Dspring.rabbitmq.host=rabbitmq -Dspring.rabbitmq.username=user -Dspring.rabbitmq.password=password
+    - cd ../payment && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false -Dspring.config.import= -Dspring.rabbitmq.host=rabbitmq -Dspring.rabbitmq.username=user -Dspring.rabbitmq.password=password
     - cd ../user && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false -Dspring.config.import=
     - cd ../notification && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false -Dspring.config.import=
     - cd ../gateway && mvn test -Dspring.profiles.active=test -Dspring.cloud.config.enabled=false -Dspring.config.import=
@@ -33,6 +42,7 @@ test_services:
   only:
     - develop
     - main
+    - rabbitmq
   cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
@@ -40,7 +50,6 @@ test_services:
   artifacts:
     reports:
       junit: "**/target/surefire-reports/TEST-*.xml"
-    when: always
     when: always
 
 # Tests du frontend
@@ -57,6 +66,7 @@ test_frontend:
   only:
     - develop
     - main
+    - rabbitmq
   cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
@@ -68,6 +78,63 @@ test_frontend:
         path: front/coverage/**/cobertura-coverage.xml
     when: always
 
+# Analyse SonarCloud - Backend Java
+sonar_backend:
+  stage: sonar
+  image: maven:3.9.5-eclipse-temurin-21
+  script:
+    - echo "Running SonarCloud analysis for all services..."
+    - |
+      for service in catalog order payment user notification gateway discovery config; do
+        echo "Analyzing $service..."
+        cd services/$service
+        mvn verify sonar:sonar \
+          -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+          -Dsonar.projectName="la-petite-maison-de-lepouvante" \
+          -Dsonar.organization=${SONAR_ORGANIZATION} \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.token=${SONAR_TOKEN} \
+          -Dspring.profiles.active=test \
+          -Dspring.cloud.config.enabled=false \
+          -Dspring.config.import= \
+          -DskipTests=true
+        cd ../..
+      done
+  only:
+    - develop
+    - main
+    - rabbitmq
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .m2/repository
+
+# Analyse SonarCloud - Frontend Angular
+sonar_frontend:
+  stage: sonar
+  image: sonarsource/sonar-scanner-cli:latest
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+  script:
+    - sonar-scanner
+      -Dsonar.projectKey=${SONAR_PROJECT_KEY}
+      -Dsonar.projectName="la-petite-maison-de-lepouvante"
+      -Dsonar.organization=${SONAR_ORGANIZATION}
+      -Dsonar.host.url=https://sonarcloud.io
+      -Dsonar.token=${SONAR_TOKEN}
+      -Dsonar.sources=front/src
+      -Dsonar.exclusions=**/*.spec.ts,**/node_modules/**
+      -Dsonar.javascript.lcov.reportPaths=front/coverage/lcov.info
+  only:
+    - develop
+    - main
+    - rabbitmq
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+
 # Build des images Docker
 build_services:
   stage: build
@@ -77,21 +144,65 @@ build_services:
   variables:
     DOCKER_HOST: tcp://docker:2376
     DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_BUILDKIT: "1"
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
-    - echo "Building Docker images..."
-    - docker build -t $CI_REGISTRY_IMAGE/discovery:$CI_COMMIT_SHA services/discovery
-    - docker build -t $CI_REGISTRY_IMAGE/config:$CI_COMMIT_SHA services/config
-    - docker build -t $CI_REGISTRY_IMAGE/gateway:$CI_COMMIT_SHA services/gateway
-    - docker build -t $CI_REGISTRY_IMAGE/catalog:$CI_COMMIT_SHA services/catalog
-    - docker build -t $CI_REGISTRY_IMAGE/order:$CI_COMMIT_SHA services/order
-    - docker build -t $CI_REGISTRY_IMAGE/payment:$CI_COMMIT_SHA services/payment
-    - docker build -t $CI_REGISTRY_IMAGE/user:$CI_COMMIT_SHA services/user
-    - docker build -t $CI_REGISTRY_IMAGE/notification:$CI_COMMIT_SHA services/notification
-    - docker build -t $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA front
-    - echo "Build completed successfully"
+    - echo "Building and pushing Docker images..."
+    - docker build -t $CI_REGISTRY_IMAGE/discovery:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE/discovery:latest services/discovery
+    - docker push $CI_REGISTRY_IMAGE/discovery:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/discovery:latest
+    - docker build -t $CI_REGISTRY_IMAGE/config:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE/config:latest services/config
+    - docker push $CI_REGISTRY_IMAGE/config:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/config:latest
+    - docker build -t $CI_REGISTRY_IMAGE/gateway:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE/gateway:latest services/gateway
+    - docker push $CI_REGISTRY_IMAGE/gateway:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/gateway:latest
+    - docker build -t $CI_REGISTRY_IMAGE/catalog:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE/catalog:latest services/catalog
+    - docker push $CI_REGISTRY_IMAGE/catalog:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/catalog:latest
+    - docker build -t $CI_REGISTRY_IMAGE/order:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE/order:latest services/order
+    - docker push $CI_REGISTRY_IMAGE/order:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/order:latest
+    - docker build -t $CI_REGISTRY_IMAGE/payment:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE/payment:latest services/payment
+    - docker push $CI_REGISTRY_IMAGE/payment:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/payment:latest
+    - docker build -t $CI_REGISTRY_IMAGE/user:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE/user:latest services/user
+    - docker push $CI_REGISTRY_IMAGE/user:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/user:latest
+    - docker build -t $CI_REGISTRY_IMAGE/notification:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE/notification:latest services/notification
+    - docker push $CI_REGISTRY_IMAGE/notification:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/notification:latest
+    - docker build -t $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE/frontend:latest front
+    - docker push $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/frontend:latest
+    - echo "Build and push completed successfully"
   only:
     - develop
     - main
+    - rabbitmq
+
+# Déploiement local via GitLab Runner (shell executor sur ton poste)
+deploy_local:
+  stage: deploy
+  tags:
+    - local-deploy
+  variables:
+    REGISTRY: $CI_REGISTRY_IMAGE
+    IMAGE_TAG: $CI_COMMIT_SHA
+  script:
+    - echo "Deploying on local machine (with RabbitMQ)..."
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker compose pull
+    - docker compose down --remove-orphans
+    - docker compose up -d
+    - echo "Deployment done! RabbitMQ UI available on http://localhost:15672 (user/password)"
+  environment:
+    name: local
+  only:
+    - develop
+    - main
+    - rabbitmq
 
 sast:
   stage: test
