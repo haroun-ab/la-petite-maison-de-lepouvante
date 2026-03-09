@@ -233,6 +233,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Check Docker is running
+        run: docker info
+
       - name: Deploy full stack (including RabbitMQ)
         run: |
           docker compose pull
